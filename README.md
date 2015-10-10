@@ -23,4 +23,4 @@ Clean Ubuntu 14.04 with openssh-server for ansible testing.
 
 ## teamcity-site
 Ubuntu 14.04 with php, drush, mysql for drupal testing
-mysql root password: `teamcity`
+See [README.md](teamcity-site)

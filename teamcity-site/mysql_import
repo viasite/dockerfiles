@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+DUMP_FILE="$1"
+DB_NAME="$2"
+mysql -Brs -e "DROP DATABASE $DB_NAME; CREATE DATABASE $DB_NAME;"
+zcat "$DUMP_FILE" | mysql "$DB_NAME"

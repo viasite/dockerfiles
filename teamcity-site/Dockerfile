@@ -62,6 +62,7 @@ composer install
 
 
 COPY entrypoint.sh /
+COPY mysql_import /usr/local/bin/
 
 
 EXPOSE 22
@@ -69,4 +70,5 @@ EXPOSE 80
 EXPOSE 3306
 
 
+WORKDIR /var/www
 CMD ["/entrypoint.sh"]

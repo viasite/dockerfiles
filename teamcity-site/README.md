@@ -1,7 +1,9 @@
 # teamcity-site
 Ubuntu 14.04 with php, drush, mysql for drupal testing
 
-mysql root password: `teamcity`
+mysql database: `test`  
+mysql root password: `teamcity`  
+root path: `/var/www`  
 
 Run command:
 ```
@@ -12,7 +14,9 @@ popstas/teamcity-site
 ```
 
 
-On start docker checks that `sql.gz` exists in drupal root, detects target database by drush sql-connect and imports it.
-After that it runs drush runserver on site.domain
+On start docker:  
+- add settings.local.php (and works only with [patched settings.php](https://gist.github.com/jeffam/1a616d43b0913555b9ef))  
+- checks that `sql.gz` exists in drupal root, and imports it do database `test`  
+- runs drush runserver on site.domain  
 
 In my infrastructure `SERVICE_NAME` also used by consul, so container available by site.domain in private network.

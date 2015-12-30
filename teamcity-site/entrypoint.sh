@@ -8,14 +8,14 @@ MYSQL_DATABASE=${MYSQL_DATABASE:-"test"}
 
 SITE_DOMAIN=${SITE_DOMAIN:-$SERVICE_NAME}
 
-#rm -rf /var/lib/mysql
-
 if [[ "$MYSQL_RAM_SIZE" != "0" ]]; then
 	echo "Mounting MySQL with ${MYSQL_RAM_SIZE}MB of RAM."
+	rm -rf /var/lib/mysql
 	mkdir -p /var/lib/mysql
 	mount -t tmpfs -o size="${MYSQL_RAM_SIZE}m" tmpfs /var/lib/mysql
 
 	chown -R mysql:mysql /var/lib/mysql
+	echo "Installing MySQL"
 	mysql_install_db --user mysql > /dev/null 2>&1
 	#mysqladmin -u root -p'' password "$MYSQL_PASSWORD"
 
@@ -51,18 +51,17 @@ grep "0.0.0.0 $SITE_DOMAIN" /etc/hosts || {
 	echo 0.0.0.0 $SITE_DOMAIN >> /etc/hosts
 }
 
-db_name="test"
 # settings.local.php
 if [ ! -f /var/www/sites/default/settings.local.php ]; then
 	#chmod 755 /var/www/sites/default
-	echo "<?php \$databases['default']['default'] = array('database' => '$db_name', 'host' => 'localhost', 'driver' => 'mysql', 'username' => 'root', 'password' => 'teamcity');" > "/var/www/sites/default/settings.local.php"
+	echo "<?php \$databases['default']['default'] = array('database' => '$MYSQL_DATABASE', 'host' => 'localhost', 'driver' => 'mysql', 'username' => 'root', 'password' => '$MYSQL_PASSWORD');" > "/var/www/sites/default/settings.local.php"
 fi
 
 # mysql import
 if [ -f "/var/www/sql.gz" ]; then
 	#db_name=$(drush sql-connect | grep -o "\--database=.*\? " | cut -d'=' -f2 | tr -d ' ')
-	echo "found /var/www/sql.gz, import db to $db_name"
-	mysql_import /var/www/sql.gz "$db_name"
+	echo "found /var/www/sql.gz, import db to $MYSQL_DATABASE"
+	mysql_import /var/www/sql.gz "$MYSQL_DATABASE"
 fi
 
 

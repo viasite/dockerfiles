@@ -19,7 +19,7 @@ RUN \
 RUN \
   apt-get --no-install-recommends -y install python python-apt python-pip python-dev python-setuptools gcc libssl-dev libffi-dev && \
   pip install ansible python-vagrant docker-py molecule && \
-  apt-get purge -y python-dev python-setuptools gcc && \
+  apt-get purge -y python-dev gcc && \
   apt autoremove -y
 
 # Set environment variables.

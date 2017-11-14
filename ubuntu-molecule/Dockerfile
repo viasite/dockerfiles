@@ -15,11 +15,13 @@ RUN \
   apt-get update && \
   apt-get -y install docker-engine
 
-# Install 
+# Install
 RUN \
   apt-get --no-install-recommends -y install python python-apt python-pip python-dev python-setuptools gcc libssl-dev libffi-dev && \
-  pip install ansible python-vagrant docker molecule && \
-  apt-get purge -y python-dev gcc && \
+  pip install -U pip && \
+  pip install molecule ansible docker && \
+  pip uninstall -y pip && \
+  apt-get purge -y python-apt python-pip python-dev python-setuptools gcc libssl-dev libffi-dev && \
   apt autoremove -y
 
 # Set environment variables.
